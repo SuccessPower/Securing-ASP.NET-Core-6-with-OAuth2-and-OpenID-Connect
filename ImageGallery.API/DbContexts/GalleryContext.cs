@@ -10,7 +10,7 @@ namespace ImageGallery.API.DbContexts
         public GalleryContext(DbContextOptions<GalleryContext> options)
            : base(options)
         {
-        } 
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
