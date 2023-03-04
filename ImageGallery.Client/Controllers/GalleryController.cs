@@ -26,6 +26,7 @@ namespace ImageGallery.Client.Controllers
         public async Task<IActionResult> Index()
         {
             await LogIdentityInformation();
+
             var httpClient = _httpClientFactory.CreateClient("APIClient");
 
             var request = new HttpRequestMessage(
@@ -33,7 +34,7 @@ namespace ImageGallery.Client.Controllers
                 "/api/images/");
 
             var response = await httpClient.SendAsync(
-                request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+                request, HttpCompletionOption.ResponseHeadersRead);
 
             response.EnsureSuccessStatusCode();
 
@@ -54,7 +55,7 @@ namespace ImageGallery.Client.Controllers
                 $"/api/images/{id}");
 
             var response = await httpClient.SendAsync(
-                request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+                request, HttpCompletionOption.ResponseHeadersRead);
 
             response.EnsureSuccessStatusCode();
 
@@ -134,7 +135,7 @@ namespace ImageGallery.Client.Controllers
         {
             return View();
         }
-                
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "UserCanAddImage")]
@@ -179,7 +180,7 @@ namespace ImageGallery.Client.Controllers
             };
 
             var response = await httpClient.SendAsync(
-                request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+                request, HttpCompletionOption.ResponseHeadersRead);
 
             response.EnsureSuccessStatusCode();
 
@@ -194,7 +195,11 @@ namespace ImageGallery.Client.Controllers
 
             // get the saved access token
             var accessToken = await HttpContext
-                .GetTokenAsync (OpenIdConnectParameterNames.AccessToken);
+                .GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+
+            // get the refresh token
+            var refreshToken = await HttpContext
+                .GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
 
             var userClaimsStringBuilder = new StringBuilder();
             foreach (var claim in User.Claims)
@@ -208,6 +213,8 @@ namespace ImageGallery.Client.Controllers
                 $"\n{identityToken} \n{userClaimsStringBuilder}");
             _logger.LogInformation($"Access token: " +
                 $"\n{accessToken}");
+            _logger.LogInformation($"Refresh token: " +
+                $"\n{refreshToken}");
         }
     }
 }

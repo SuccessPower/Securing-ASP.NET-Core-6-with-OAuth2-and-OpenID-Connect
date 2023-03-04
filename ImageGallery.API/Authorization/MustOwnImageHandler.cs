@@ -5,10 +5,10 @@ namespace ImageGallery.API.Authorization
 {
     public class MustOwnImageHandler : AuthorizationHandler<MustOwnImageRequirement>
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IGalleryRepository _galleryRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MustOwnImageHandler(IGalleryRepository galleryRepository, 
+        public MustOwnImageHandler(IGalleryRepository galleryRepository,
             IHttpContextAccessor httpContextAccessor)
         {
             _galleryRepository = galleryRepository ??
@@ -17,14 +17,16 @@ namespace ImageGallery.API.Authorization
                 throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
+
+
         protected override async Task HandleRequirementAsync(
-            AuthorizationHandlerContext context, 
+            AuthorizationHandlerContext context,
             MustOwnImageRequirement requirement)
         {
             var imageId = _httpContextAccessor.HttpContext?
                 .GetRouteValue("id")?.ToString();
 
-            if(!Guid.TryParse(imageId, out Guid imageIdAsGuid)) 
+            if (!Guid.TryParse(imageId, out Guid imageIdAsGuid))
             {
                 context.Fail();
                 return;
@@ -33,14 +35,14 @@ namespace ImageGallery.API.Authorization
             // get the sub claim
             var ownerId = context.User
                 .Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-            // if it cannot be found, the handler fails
+            // if it cannot be found, the handler fails 
             if (ownerId == null)
             {
                 context.Fail();
                 return;
             }
 
-            if(!await _galleryRepository
+            if (!await _galleryRepository
                 .IsImageOwnerAsync(imageIdAsGuid, ownerId))
             {
                 context.Fail();
