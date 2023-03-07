@@ -29,9 +29,11 @@ namespace Marvin.IDP.Services
 
         public async Task IsActiveAsync(IsActiveContext context)
         {
-            var subjectId = context.Subject.GetSubjectId();
-            context.IsActive = await _localUserService
-                .IsUserActive(subjectId);
+            context.IsActive = true;
+
+            //var subjectId = context.Subject.GetSubjectId();
+            //context.IsActive = await _localUserService
+            //    .IsUserActive(subjectId);
         }
     }
 }
