@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Marvin.IDP.Pages.ExternalLogin;
+namespace IdentityServerHost.Pages.ExternalLogin;
 
 [AllowAnonymous]
 [SecurityHeaders]

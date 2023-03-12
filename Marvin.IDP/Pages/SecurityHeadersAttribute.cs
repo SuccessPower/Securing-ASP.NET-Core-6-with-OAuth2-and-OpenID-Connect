@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Marvin.IDP.Pages;
+namespace IdentityServerHost.Pages;
 
 public class SecurityHeadersAttribute : ActionFilterAttribute
 {

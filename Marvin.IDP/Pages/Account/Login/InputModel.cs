@@ -4,7 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Marvin.IDP.Pages.Login;
+namespace IdentityServerHost.Pages.Login;
 
 public class InputModel
 {
